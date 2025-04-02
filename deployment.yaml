@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: static-site-deployment
 spec:
-  replicas: 3
+  replicas: 1  # Initial number of replicas (HPA will scale this up/down)
   selector:
     matchLabels:
       app: static-site
@@ -13,9 +13,14 @@ spec:
         app: static-site
     spec:
       containers:
-        - name: static-site
-          image: ayushjohry123/static-site:latest
-          imagePullPolicy: Always  # Replace with your Docker Hub image
-          ports:
-            - containerPort: 80
-
+      - name: static-site
+        image: ayushjohry123/static-site:latest  # Replace with your actual image
+        resources:
+          requests:
+            cpu: "50m"  # Minimum CPU required (100 millicores = 0.1 CPU)
+            memory: "64Mi"  # Minimum Memory required
+          limits:
+            cpu: "200m"  # Max CPU allowed (0.5 CPU)
+            memory: "128Mi"  # Max Memory allowed
+        ports:
+        - containerPort: 80
