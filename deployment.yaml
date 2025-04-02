@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: static-site-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: static-site
+  template:
+    metadata:
+      labels:
+        app: static-site
+    spec:
+      containers:
+        - name: static-site
+          image: ayushjohry123/static-site:latest
+          imagePullPolicy: Always  # Replace with your Docker Hub image
+          ports:
+            - containerPort: 80
+
